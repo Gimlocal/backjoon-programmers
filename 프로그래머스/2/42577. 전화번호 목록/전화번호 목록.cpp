@@ -5,14 +5,10 @@
 
 using namespace std;
 
-bool sorting(string a, string b) {
-    return a.size() < b.size();
-}
-
 bool solution(vector<string> phone_book) {
     unordered_set<string> set;
     
-    sort(phone_book.begin(),phone_book.end(),sorting);
+    sort(phone_book.begin(),phone_book.end());
     
     set.insert(phone_book[0]);
     for (int i = 1;i < phone_book.size();i++) {
