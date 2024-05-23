@@ -1,37 +1,35 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 int main() {
 	ios_base::sync_with_stdio(false);
-	cin.tie(0);
+	cin.tie(0); cout.tie(0);
 
-	string word; cin >> word;
-	int num; cin >> num;
-	vector<string> W(word.size());
+	string S; int q;
+	cin >> S >> q;
 
-	for (int i = 0; i < word.size(); i++) {
-		if (i == 0) {
-			W[i] = word[i];
-		}
-		else {
-			W[i] = W[i - 1] + word[i];
+	int size = S.size();
+
+	vector<vector<int>> v(26, vector<int>(200000, 0));
+
+	for (int i = 0; i < 26; i++) {
+		v[i][0] = ((S[0] - 97) == i);
+		for (int j = 1; j < size; j++) {
+			v[i][j] = v[i][j - 1] + ((S[j] - 97) == i);
 		}
 	}
 
-	for (int i = 0; i < num; i++) {
-		char ch; int begin, end;
-		cin >> ch >> begin >> end;
+	char alpha; int l, r;
+	
+	for (int i = 0; i < q; i++) {
+		cin >> alpha >> l >> r;
 
-		if (begin == 0) {
-			cout << count(W[end].begin(), W[end].end(), ch) << "\n";
+		if (l == 0) {
+			cout << v[alpha - 97][r] << "\n";
 		}
 		else {
-			int a = count(W[end].begin(), W[end].end(), ch);
-			int b = count(W[begin - 1].begin(), W[begin - 1].end(), ch);
-
-			cout << max(0, a - b) << "\n";
+			cout << v[alpha - 97][r] - v[alpha - 97][l - 1] << "\n";
 		}
 	}
 }
