@@ -7,8 +7,8 @@ int main()
 {
 	int lineNum;
 	cin >> lineNum;
-	vector<int> lv(lineNum - 1);
-	vector<int> sv(lineNum);
+	vector<long> lv(lineNum - 1);
+	vector<long> sv(lineNum);
 
 	for (int i = 0; i < lineNum - 1; i++)
 	{
@@ -19,8 +19,8 @@ int main()
 		cin >> sv[i];
 	}
 
-	int minCost = 1000000001;
-	int result = 0;
+	long minCost = 1000000001;
+	long long result = 0;
 
 	for (int i = 0; i < lineNum - 1; i++) 
 	{
