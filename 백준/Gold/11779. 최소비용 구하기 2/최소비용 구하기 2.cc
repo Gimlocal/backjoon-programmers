@@ -7,7 +7,7 @@ using namespace std;
 typedef pair<int, int> PII;
 const int INF = numeric_limits<int>::max();
 
-int Dijkstra(int start, int end, vector<vector<PII>>& G, stack<int>& S)
+int Dijkstra(int start, int end, vector<vector<PII>>& G, vector<int>& A)
 {
 	vector<int> dist(G.size(), INF);
 	priority_queue<PII, vector<PII>, greater<PII>> pq;
@@ -27,13 +27,13 @@ int Dijkstra(int start, int end, vector<vector<PII>>& G, stack<int>& S)
 			int newNode = p.first, weight = p.second, newDist = curDist + weight;
 			if (newDist < dist[newNode])
 			{
-				if (newNode == end) S.push(curNode);
+				A[newNode] = curNode;
 				dist[newNode] = newDist;
 				pq.push({ newDist, newNode });
 			}
 		}
 	}
-	
+
 	return dist[end];
 }
 
@@ -49,22 +49,18 @@ int main()
 	}
 
 	int start, end; cin >> start >> end;
-	stack<int> S; stack<int> ans;
+	vector<int> trace(N); vector<int> ans;
 
-	cout << Dijkstra(start - 1, end - 1, G, S) << "\n";
+	cout << Dijkstra(start - 1, end - 1, G, trace) << "\n";
+	int num = end - 1;
 
-	while (!S.empty())
+	while (num != start - 1)
 	{
-		ans.push(S.top());
-		while (!S.empty()) S.pop();
-		Dijkstra(start - 1, ans.top(), G, S);
+		ans.push_back(num);
+		num = trace[num];
 	}
+	ans.push_back(start - 1);
 
-	cout << ans.size() + 1 <<"\n";
-	while (!ans.empty())
-	{
-		cout << ans.top() + 1 << " ";
-		ans.pop();
-	}
-	cout << end;
+	cout << ans.size() << "\n";
+	for (int i = 0; i < ans.size(); i++) cout << ans[ans.size() - 1 - i] + 1 << " ";
 }
