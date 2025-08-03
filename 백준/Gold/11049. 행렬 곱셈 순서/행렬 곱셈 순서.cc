@@ -1,23 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <climits>
 using namespace std;
-using VP = vector<pair<int, int>>;
-using V = vector<vector<int>>;
-
-int MinCost(int i, int j, VP& v, V& dp)
-{
-	if (dp[i][j] != 0) return dp[i][j];
-	if (i == j) return 0;
-
-	int result = 2'147'483'647;
-	for (int a = i; a < j; a++)
-	{
-		result = min(MinCost(i, a, v, dp) + MinCost(a + 1, j, v, dp) + v[i].first * v[a].second * v[j].second, result);
-	}
-	dp[i][j] = result;
-
-	return result;
-}
 
 int main()
 {
@@ -30,7 +14,22 @@ int main()
 		v[i] = make_pair(a, b);
 	}
 
-	V dp(N, vector<int>(N, 0));
+	vector<vector<int>> dp(N, vector<int>(N, 0));
 
-	cout << MinCost(0, N - 1, v, dp);
+	for (int len = 2; len <= N; ++len)
+	{
+		for (int i = 0; i <= N - len; ++i)
+		{
+			int j = i + len - 1;
+			dp[i][j] = INT_MAX;
+
+			for (int k = i; k < j; ++k)
+			{
+				int cost = dp[i][k] + dp[k + 1][j] + v[i].first * v[k].second * v[j].second;
+				dp[i][j] = min(dp[i][j], cost);
+			}
+		}
+	}
+
+	cout << dp[0][N - 1];
 }
